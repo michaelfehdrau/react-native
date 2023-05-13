@@ -1,19 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { View, FlatList, Text, TouchableOpacity, StyleSheet  } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import Loading from '../components/LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { toggleFavorite } from '../features/favorites/favoritesSlice';
 
- const dispatch = useDispatch();
-
-const FavoriteScreen = ({ navigation }) => {
+const FavoritesScreen = ({ navigation }) => {
     const { campsitesArray, isLoading, errMess } = useSelector(
         (state) => state.campsites
     );
-
     const favorites = useSelector((state) => state.favorites);
+    const dispatch = useDispatch();
 
     const renderFavoriteItem = ({ item: campsite }) => {
         return (
@@ -21,7 +19,7 @@ const FavoriteScreen = ({ navigation }) => {
                 <View style={styles.deleteView}>
                     <TouchableOpacity
                         style={styles.deleteTouchable}
-                         onPress={() => dispatch(toggleFavorite(campsite.id))}
+                        onPress={() => dispatch(toggleFavorite(campsite.id))}
                     >
                         <Text style={styles.deleteText}>Delete</Text>
                     </TouchableOpacity>
@@ -35,7 +33,10 @@ const FavoriteScreen = ({ navigation }) => {
                             })
                         }
                     >
-                        <Avatar rounded source={{ uri: baseUrl + campsite.image }} />
+                        <Avatar
+                            rounded
+                            source={{ uri: baseUrl + campsite.image }}
+                        />
                         <ListItem.Content>
                             <ListItem.Title>{campsite.name}</ListItem.Title>
                             <ListItem.Subtitle>
@@ -57,7 +58,7 @@ const FavoriteScreen = ({ navigation }) => {
                 <Text>{errMess}</Text>
             </View>
         );
-    };
+    }
     return (
         <FlatList
             data={campsitesArray.filter((campsite) =>
@@ -67,12 +68,12 @@ const FavoriteScreen = ({ navigation }) => {
             keyExtractor={(item) => item.id.toString()}
         />
     );
-};  
+};
 
 const styles = StyleSheet.create({
     deleteView: {
         flexDirection: 'row',
-        justflyContent: 'flex-end',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         flex: 1
     },
@@ -90,4 +91,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default FavoriteScreen;
+export default FavoritesScreen;
