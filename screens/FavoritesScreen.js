@@ -12,6 +12,7 @@ import { SwipeRow } from 'react-native-swipe-list-view';
 import Loading from '../components/LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { toggleFavorite } from '../features/favorites/favoritesSlice';
+import * as Animatable from 'react-native-animatable';
 
 const FavoritesScreen = ({ navigation }) => {
     const { campsitesArray, isLoading, errMess } = useSelector(
@@ -32,21 +33,21 @@ const FavoritesScreen = ({ navigation }) => {
                                 'Are you sure you wish to delete the favorite campsite ' +
                                 campsite.name + '?',
                                 [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () =>
-                                        console.log(
-                                            campsite.name + 'Not Deleted'
-                                        ),
-                                    style: 'cancel'
-                                },
-                                {
-                                    text: 'OK',
-                                    onPress: () =>
-                                        dispatch(
-                                            toggleFavorite(campsite.id)
-                                        )
-                                }
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () =>
+                                            console.log(
+                                                campsite.name + 'Not Deleted'
+                                            ),
+                                        style: 'cancel'
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: () =>
+                                            dispatch(
+                                                toggleFavorite(campsite.id)
+                                            )
+                                    }
                                 ],
                                 { cancelable: false }
                             )
@@ -91,13 +92,15 @@ const FavoritesScreen = ({ navigation }) => {
         );
     }
     return (
-        <FlatList
-            data={campsitesArray.filter((campsite) =>
-                favorites.includes(campsite.id)
-            )}
-            renderItem={renderFavoriteItem}
-            keyExtractor={(item) => item.id.toString()}
-        />
+        <Animatable.View animation='fadeInRightBig' duration={2000}>
+            <FlatList
+                data={campsitesArray.filter((campsite) =>
+                    favorites.includes(campsite.id)
+                )}
+                renderItem={renderFavoriteItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
+        </Animatable.View>
     );
 };
 
