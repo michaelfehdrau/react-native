@@ -61,7 +61,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         scaleAnimation.start();
-    }, {});
+    }, []);
 
     return (
         <Animated.ScrollView style={{ transform: [{ scale: scaleValue }] }}>
